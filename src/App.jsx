@@ -14,6 +14,15 @@ export default function App() {
   const [view, setView] = useState('notes');
   const [folderId, setFolderId] = useState(null);
   const [labelId, setLabelId] = useState(null);
+  const [listView, setListView] = useState(false);
+
+  const handleListViewToggle = () => {
+    setListView((prev) => {
+      const newVal = !prev;
+      console.log('ListView toggle:', newVal ? 'Список' : 'Сетка');
+      return newVal;
+    });
+  };
 
   const { notes, loading, error, addNote, updateNote, deleteNote, toggleArchive, togglePin, uploadImage, uploadImageFromUrl } = useNotes(folderId, view);
   const { labels, addLabel, updateLabel, deleteLabel } = useLabels();
@@ -77,7 +86,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F5F0E8]">
-      <Header search={search} onSearch={setSearch} onMenuToggle={() => setSidebarOpen(true)} />
+      <Header search={search} onSearch={setSearch} onMenuToggle={() => setSidebarOpen(true)} listView={listView} onListViewToggle={handleListViewToggle} />
       
       <Sidebar
         folders={folders}
@@ -126,9 +135,9 @@ export default function App() {
             <p className="text-xs font-semibold text-[#A8A29E] uppercase tracking-widest mb-3 flex items-center gap-1">
               📌 Закреплённые
             </p>
-            <div className="notes-grid">
+            <div className={listView ? 'grid grid-cols-1 gap-4' : 'notes-grid'}>
               {pinned.map((note) => (
-                <div key={note.id} className="note-item">
+                <div key={note.id} className={listView ? '' : 'note-item'}>
                   <NoteCard {...cardProps(note)} />
                 </div>
               ))}
@@ -143,9 +152,9 @@ export default function App() {
                 Другие
               </p>
             )}
-            <div className="notes-grid">
+            <div className={listView ? 'grid grid-cols-1 gap-4' : 'notes-grid'}>
               {others.map((note) => (
-                <div key={note.id} className="note-item">
+                <div key={note.id} className={listView ? '' : 'note-item'}>
                   <NoteCard {...cardProps(note)} />
                 </div>
               ))}

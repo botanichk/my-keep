@@ -1,7 +1,7 @@
-import { Search, X, Menu } from 'lucide-react';
+import { Search, X, Menu, LayoutList, LayoutGrid } from 'lucide-react';
 import AppIcon from '../ui/AppIcon';
 
-export default function Header({ search, onSearch, onMenuToggle }) {
+export default function Header({ search, onSearch, onMenuToggle, listView, onListViewToggle }) {
   return (
     <header className="fixed top-0 left-0 right-0 z-30 bg-[#F5F0E8] border-b border-[#E8E0D4] h-14 flex items-center px-4 gap-3">
       <button
@@ -32,6 +32,16 @@ export default function Header({ search, onSearch, onMenuToggle }) {
             <X size={14} />
           </button>
         )}
+      </div>
+
+      <div
+        role="button"
+        tabIndex={0}
+        onPointerDown={(e) => { e.preventDefault(); onListViewToggle(); }}
+        className="p-2 rounded-xl bg-transparent text-[#78716C] cursor-pointer select-none active:bg-[#EDE8DF]"
+        title={listView ? 'Показать сетку' : 'Показать список'}
+      >
+        {listView ? <LayoutList size={18} /> : <LayoutGrid size={18} />}
       </div>
     </header>
   );

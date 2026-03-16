@@ -48,3 +48,8 @@ body {
   break-inside: avoid;
   margin-bottom: 1rem;
 }
+
+/* Список (для мобильного переключателя) */
+.grid-cols-1.gap-4 > * {
+  margin-bottom: 0 !important;
+}
