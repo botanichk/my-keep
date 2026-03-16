@@ -8,7 +8,8 @@
 
 Веб-приложение — клон Google Keep для создания и хранения заметок. Работает в браузере и устанавливается на телефон как приложение (PWA).
 
-**Живой адрес:** https://mykeep-app-2026.netlify.app
+**Живой адрес (Netlify):** https://mykeep-app-2026.netlify.app  
+**Живой адрес (GitLab Pages):** https://igorrr.ro.gitlab.io/my-keep
 
 ---
 
@@ -20,8 +21,9 @@
 | Стили | Tailwind CSS |
 | База данных | Firebase Firestore (NoSQL, realtime) |
 | Хранилище файлов | Firebase Storage (платный, не используем) |
-| Хостинг | Netlify |
+| Хостинг | Netlify + GitLab Pages |
 | Иконки | lucide-react |
+| PWA | Service Worker + manifest.json |
 
 ---
 
@@ -49,11 +51,13 @@
 ```
 my-keep/
 ├── index.html
+├── .gitlab-ci.yml        ← CI/CD для GitLab Pages
+├── CONTEXT.md            ← Этот файл
 ├── public/
 │   ├── manifest.json       ← PWA манифест
 │   ├── sw.js               ← Service Worker
-│   ├── icon-192.png        ← Иконка PWA
-│   └── icon-512.png        ← Иконка PWA
+│   ├── icon-192.svg        ← Иконка PWA
+│   └── icon-512.svg        ← Иконка PWA
 └── src/
     ├── main.jsx            ← Точка входа
     ├── App.jsx             ← Корневой компонент
@@ -66,7 +70,7 @@ my-keep/
     │   └── useFolders.js   ← CRUD папок
     └── components/
         ├── layout/
-        │   ├── Header.jsx      ← Шапка с поиском
+        │   ├── Header.jsx      ← Шапка с поиском + переключатель вида
         │   └── Sidebar.jsx     ← Навигация
         ├── notes/
         │   ├── NoteForm.jsx    ← Форма создания
@@ -143,6 +147,7 @@ createdAt   timestamp
 - ✅ Адаптив mobile/tablet/desktop
 - ✅ PWA — устанавливается на телефон как приложение
 - ✅ Toast уведомления
+- ✅ **Переключатель вида: список / сетка (на мобильном)**
 
 ---
 
@@ -154,10 +159,29 @@ createdAt   timestamp
 
 **Загрузка фото с компа:** Firebase Storage требует платный план — не реализовано. Работает только загрузка по URL.
 
+**NoteModal:** на мобильных (`< 640px`) модалка занимает весь экран, появляется снизу вверх.
+
+**Переключатель вида (Header.jsx):**
+- Кнопка с иконками `LayoutList` / `LayoutGrid` из lucide-react
+- Использует `onPointerDown` для надёжной работы на мобильном Firefox
+- На десктопе всегда masonry сетка, на мобильном переключается список/сетка
+
+**Service Worker:** кэширует приложение для PWA. При проблемах с обновлением — изменить версию кэша в `public/sw.js`.
+
 **Деплой после каждого изменения:**
+
+*Netlify:*
 ```bash
 npm run build
-netlify deploy --prod --dir=dist
+npx netlify deploy --prod --dir=dist
+```
+
+*GitLab Pages (автоматически):*
+```bash
+git add .
+git commit -m "описание изменений"
+git push
+# → Pipeline запустится автоматически
 ```
 
 ---
@@ -169,3 +193,21 @@ npm install
 npm run dev
 # → http://localhost:5173
 ```
+
+---
+
+## CI/CD
+
+**GitLab Pages:**
+- Файл: `.gitlab-ci.yml`
+- Команда: `npm run build` → `cp -r dist public`
+- Публикация: `https://igorrr.ro.gitlab.io/my-keep`
+- Ветка: `main`
+
+**Netlify:**
+- Ручной деплой: `npx netlify deploy --prod --dir=dist`
+- URL: `https://mykeep-app-2026.netlify.app`
+
+---
+
+*Последнее обновление: 2026-03-16*
