@@ -6,7 +6,7 @@ import App from './App.jsx'
 // Регистрируем Service Worker для PWA
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/my-keep/sw.js');
+    navigator.serviceWorker.register('/sw.js');
   });
 }
 

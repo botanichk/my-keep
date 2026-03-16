@@ -1,12 +1,12 @@
-const CACHE = 'my-keep-v4';
+const CACHE = 'my-keep-v5';
 
 const ASSETS = [
-  '/my-keep/',
-  '/my-keep/index.html',
-  '/my-keep/manifest.json',
-  '/my-keep/icon-192.png',
-  '/my-keep/icon-512.png',
-  '/my-keep/apple-touch-icon.png',
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
 ];
 
 // Установка — кешируем основные файлы
