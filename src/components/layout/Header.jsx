@@ -34,15 +34,14 @@ export default function Header({ search, onSearch, onMenuToggle, listView, onLis
         )}
       </div>
 
-      <div
-        role="button"
-        tabIndex={0}
-        onPointerDown={(e) => { e.preventDefault(); onListViewToggle(); }}
-        className="p-2 rounded-xl bg-transparent text-[#78716C] cursor-pointer select-none active:bg-[#EDE8DF]"
+      <button
+        onClick={onListViewToggle}
+        className="p-2 rounded-xl bg-transparent text-[#78716C] cursor-pointer select-none active:bg-[#EDE8DF] touch-manipulation"
         title={listView ? 'Показать сетку' : 'Показать список'}
+        type="button"
       >
         {listView ? <LayoutList size={18} /> : <LayoutGrid size={18} />}
-      </div>
+      </button>
     </header>
   );
 }
