@@ -46,10 +46,10 @@ export default function NoteModal({
   const inputCls = `w-full bg-transparent outline-none ${isDark ? 'text-white placeholder-gray-500' : 'text-[#1C1917] placeholder-[#A8A29E]'}`;
 
   return (
-    <div className="modal-bg fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={handleClose}>
+    <div className="modal-bg fixed inset-0 z-50 flex items-end items-center justify-center bg-black/40 p-0" onClick={handleClose}>
       <div
         style={{ backgroundColor: color }}
-        className="w-full max-w-lg rounded-2xl shadow-2xl border border-[#E8E0D4] overflow-hidden"
+        className="w-full max-w-2xl rounded-none md:rounded-2xl shadow-2xl border border-[#E8E0D4] overflow-hidden h-[100dvh] md:h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {imageUrl && (
@@ -74,9 +74,8 @@ export default function NoteModal({
         <textarea
           placeholder="Заметка..."
           value={text}
-          rows={6}
           onChange={(e) => setText(e.target.value)}
-          className={`${inputCls} px-5 py-2 text-sm resize-none`}
+          className={`${inputCls} px-5 py-2 text-sm resize-none flex-1 overflow-y-auto`}
         />
 
         {labelIds.length > 0 && (
