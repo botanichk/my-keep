@@ -21,7 +21,7 @@ export default function NoteCard({
       onClick={() => onClick(note)}
     >
       {note.imageUrl && (
-        <img src={note.imageUrl} alt="" className="w-full object-cover max-h-44" />
+        <img src={note.imageUrl} alt="" referrerPolicy="no-referrer" className="w-full object-cover max-h-44" />
       )}
 
       <div className="p-4">

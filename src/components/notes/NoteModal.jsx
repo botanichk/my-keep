@@ -54,7 +54,7 @@ export default function NoteModal({
       >
         {imageUrl && (
           <div className="relative">
-            <img src={imageUrl} alt="" className="w-full object-cover max-h-56" />
+            <img src={imageUrl} alt="" referrerPolicy="no-referrer" className="w-full object-cover max-h-56" />
             <button
               onClick={() => setImageUrl(null)}
               className="absolute top-2 right-2 p-1.5 bg-black/50 rounded-full text-white hover:bg-black/70 transition"
