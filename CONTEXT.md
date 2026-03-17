@@ -10,6 +10,7 @@
 
 **Живой адрес (Netlify):** https://mykeep-app-2026.netlify.app  
 **Живой адрес (GitLab Pages):** https://igorrr.ro.gitlab.io/my-keep
+**Живой адрес (GitHub Pages):** https://botanichk.github.io/my-keep
 
 ---
 
@@ -126,6 +127,7 @@ createdAt   timestamp
 - `archived ASC + folderId ASC + createdAt DESC` — главный экран
 - `archived ASC + updatedAt DESC` — архив
 - `folderId ASC + archived ASC + createdAt DESC` — папки
+- `deleted ASC + deletedAt DESC` — корзина
 
 ---
 
@@ -134,6 +136,7 @@ createdAt   timestamp
 - ✅ Создание заметок (форма раскрывается по клику)
 - ✅ Редактирование в модалке (весь экран на мобиле и десктопе)
 - ✅ Удаление (мягкое — флаг `deleted: true`)
+- ✅ **Корзина** — восстановление и удаление навсегда
 - ✅ Цветные карточки (12 тёплых цветов, горизонтальный ColorPicker)
 - ✅ Тёмная карточка `#1C1917` (текст автоматически белый)
 - ✅ Закрепление заметок
@@ -204,10 +207,15 @@ npm run dev
 - Публикация: `https://igorrr.ro.gitlab.io/my-keep`
 - Ветка: `main`
 
+**GitHub Pages:**
+- Репозиторий: `https://github.com/botanichk/my-keep`
+- Деплой через GitHub Actions (автоматически при push)
+- Публикация: `https://botanichk.github.io/my-keep`
+
 **Netlify:**
 - Ручной деплой: `npx netlify deploy --prod --dir=dist`
 - URL: `https://mykeep-app-2026.netlify.app`
 
 ---
 
-*Последнее обновление: 2026-03-16*
+*Последнее обновление: 2026-03-17*
