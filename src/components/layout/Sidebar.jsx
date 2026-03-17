@@ -61,6 +61,7 @@ export default function Sidebar({
         <div className="space-y-1 mb-6">
           {navItem('notes', <Home size={17} />, 'Заметки', view === 'notes' && !folderId && !labelId)}
           {navItem('archive', <Archive size={17} />, 'Архив', view === 'archive')}
+          {navItem('trash', <Trash2 size={17} />, 'Корзина', view === 'trash')}
         </div>
 
         {labels.length > 0 && (

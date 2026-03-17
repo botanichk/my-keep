@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Trash2 } from 'lucide-react';
 import { useNotes } from './hooks/useNotes';
 import { useLabels } from './hooks/useLabels';
 import { useFolders } from './hooks/useFolders';
@@ -24,7 +25,7 @@ export default function App() {
     });
   };
 
-  const { notes, loading, error, addNote, updateNote, deleteNote, toggleArchive, togglePin, uploadImage, uploadImageFromUrl } = useNotes(folderId, view);
+  const { notes, loading, error, addNote, updateNote, deleteNote, toggleArchive, togglePin, restoreNote, deleteNotePermanently, clearTrash, uploadImage, uploadImageFromUrl } = useNotes(folderId, view);
   const { labels, addLabel, updateLabel, deleteLabel } = useLabels();
   const { folders, addFolder, updateFolder, deleteFolder } = useFolders();
 
@@ -74,11 +75,15 @@ export default function App() {
     onArchive: handleArchive,
     onClick: setActiveNote,
     isArchiveView: view === 'archive',
+    isTrashView: view === 'trash',
+    onRestore: restoreNote,
+    onDeletePermanently: deleteNotePermanently,
   });
 
   const getEmptyState = () => {
     if (search) return 'search';
     if (view === 'archive') return 'archive';
+    if (view === 'trash') return 'trash';
     if (view === 'folder') return 'folder';
     if (view === 'label') return 'label';
     return 'notes';
@@ -128,6 +133,19 @@ export default function App() {
 
         {!loading && !error && filtered.length === 0 && (
           <EmptyState view={getEmptyState()} />
+        )}
+
+        {view === 'trash' && filtered.length > 0 && (
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={clearTrash}
+              className="flex items-center gap-1.5 text-sm text-red-500 hover:text-red-700
+                         px-4 py-2 rounded-xl hover:bg-red-50 transition font-medium"
+            >
+              <Trash2 size={15} />
+              Очистить корзину
+            </button>
+          </div>
         )}
 
         {pinned.length > 0 && (

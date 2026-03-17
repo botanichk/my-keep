@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   collection, onSnapshot, addDoc, updateDoc,
   deleteDoc, doc, serverTimestamp, query, orderBy, where, getDocs,
+  writeBatch,
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage } from '../firebase';
@@ -14,7 +15,14 @@ export function useNotes(folderId = null, view = 'notes') {
   useEffect(() => {
     let q;
 
-    if (view === 'archive') {
+    if (view === 'trash') {
+      // Корзина — удалённые заметки
+      q = query(
+        collection(db, 'notes'),
+        where('deleted', '==', true),
+        orderBy('deletedAt', 'desc')
+      );
+    } else if (view === 'archive') {
       // Только архивные
       q = query(
         collection(db, 'notes'),
@@ -45,6 +53,7 @@ export function useNotes(folderId = null, view = 'notes') {
           snap.docs
             .map((d) => ({ id: d.id, ...d.data() }))
             .filter((n) => {
+              if (view === 'trash') return n.deleted === true;
               if (n.deleted) return false;
               if (view === 'archive') return n.archived === true;
               if (folderId) return n.folderId === folderId;
@@ -110,6 +119,33 @@ export function useNotes(folderId = null, view = 'notes') {
     await updateDoc(doc(db, 'notes', id), { pinned: !pinned });
   };
 
+  // Восстановить из корзины
+  const restoreNote = async (id) => {
+    await updateDoc(doc(db, 'notes', id), {
+      deleted: false,
+      deletedAt: null,
+      updatedAt: serverTimestamp(),
+    });
+  };
+
+  // Удалить навсегда (физически)
+  const deleteNotePermanently = async (id, imageUrl) => {
+    if (imageUrl && imageUrl.includes('firebasestorage')) {
+      try { await deleteObject(ref(storage, imageUrl)); } catch (_) {}
+    }
+    await deleteDoc(doc(db, 'notes', id));
+  };
+
+  // Очистить всю корзину
+  const clearTrash = async () => {
+    const snap = await getDocs(
+      query(collection(db, 'notes'), where('deleted', '==', true))
+    );
+    const batch = writeBatch(db);
+    snap.docs.forEach((d) => batch.delete(doc(db, 'notes', d.id)));
+    await batch.commit();
+  };
+
   const uploadImage = async (file) => {
     const path = `notes/${Date.now()}_${file.name}`;
     const storageRef = ref(storage, path);
@@ -120,10 +156,11 @@ export function useNotes(folderId = null, view = 'notes') {
 
   const uploadImageFromUrl = (url) => url;
 
-  return { 
+  return {
     notes, loading, error,
-    addNote, updateNote, deleteNote, 
-    toggleArchive, togglePin, 
-    uploadImage, uploadImageFromUrl 
+    addNote, updateNote, deleteNote,
+    toggleArchive, togglePin,
+    restoreNote, deleteNotePermanently, clearTrash,
+    uploadImage, uploadImageFromUrl
   };
 }

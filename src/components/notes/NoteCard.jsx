@@ -6,6 +6,9 @@ export default function NoteCard({
   note, labels, folders,
   onDelete, onUpdate, onPin, onArchive, onClick,
   isArchiveView = false,
+  isTrashView = false,
+  onRestore,
+  onDeletePermanently,
 }) {
   const [showColors, setShowColors] = useState(false);
   const [showMove, setShowMove] = useState(false);
@@ -54,7 +57,30 @@ export default function NoteCard({
           className="flex items-center gap-0.5 mt-3 opacity-0 group-hover:opacity-100 transition -mb-1"
           onClick={(e) => e.stopPropagation()}
         >
-          {isArchiveView ? (
+          {isTrashView ? (
+            /* ── РЕЖИМ КОРЗИНЫ ── */
+            <>
+              <button
+                onClick={() => onRestore(note.id)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition
+                  ${isDark
+                    ? 'bg-white/10 text-white hover:bg-white/20'
+                    : 'bg-[#FAE8D8] text-[#D4763B] hover:bg-[#F5D9C4]'
+                  }`}
+              >
+                <ArchiveRestore size={13} />
+                Восстановить
+              </button>
+              <Btn
+                onClick={() => onDeletePermanently(note.id, note.imageUrl)}
+                title="Удалить навсегда"
+                danger dark={isDark}
+              >
+                <Trash2 size={14} />
+              </Btn>
+            </>
+          ) : isArchiveView ? (
+            /* ── РЕЖИМ АРХИВА ── */
             <>
               <button
                 onClick={() => onArchive(note.id, note.archived)}
@@ -76,6 +102,7 @@ export default function NoteCard({
               </Btn>
             </>
           ) : (
+            /* ── ОБЫЧНЫЙ РЕЖИМ ── */
             <>
               <Btn onClick={() => onPin(note.id, note.pinned)} title={note.pinned ? 'Открепить' : 'Закрепить'} dark={isDark}>
                 {note.pinned ? <PinOff size={14} /> : <Pin size={14} />}
