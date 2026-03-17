@@ -1,4 +1,4 @@
-const CACHE = 'my-keep-v5';
+const CACHE = 'my-keep-v6';
 
 const ASSETS = [
   '/',

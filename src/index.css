@@ -50,6 +50,12 @@ body {
 }
 
 /* Список (для мобильного переключателя) */
-.grid-cols-1.gap-4 > * {
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.notes-list > * {
   margin-bottom: 0 !important;
 }
