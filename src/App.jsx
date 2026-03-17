@@ -135,7 +135,7 @@ export default function App() {
             <p className="text-xs font-semibold text-[#A8A29E] uppercase tracking-widest mb-3 flex items-center gap-1">
               📌 Закреплённые
             </p>
-            <div className={listView ? 'grid grid-cols-1 gap-4' : 'notes-grid'}>
+            <div className={listView ? 'notes-list' : 'notes-grid'}>
               {pinned.map((note) => (
                 <div key={note.id} className={listView ? '' : 'note-item'}>
                   <NoteCard {...cardProps(note)} />
@@ -152,7 +152,7 @@ export default function App() {
                 Другие
               </p>
             )}
-            <div className={listView ? 'grid grid-cols-1 gap-4' : 'notes-grid'}>
+            <div className={listView ? 'notes-list' : 'notes-grid'}>
               {others.map((note) => (
                 <div key={note.id} className={listView ? '' : 'note-item'}>
                   <NoteCard {...cardProps(note)} />

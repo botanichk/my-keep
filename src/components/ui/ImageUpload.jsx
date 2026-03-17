@@ -31,15 +31,20 @@ export default function ImageUpload({ imageUrl, onUpload, onUploadUrl, onRemove,
     const url = urlInput.trim();
     if (!url) return;
 
-    const isImage = /\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(url) || url.startsWith('https://');
-    if (!isImage && !url.startsWith('http')) {
+    if (!url.startsWith('http')) {
       setUrlError('Введите корректный URL');
       return;
     }
 
+    // Проверяем что изображение загружается
     const img = new window.Image();
-    img.onload  = () => { onUploadUrl(url); setUrlInput(''); setShowPanel(false); };
-    img.onerror = () => setUrlError('Не удалось загрузить изображение по этому URL');
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      onUploadUrl(url);
+      setUrlInput('');
+      setShowPanel(false);
+    };
+    img.onerror = () => setUrlError('Не удалось загрузить изображение');
     img.src = url;
   };
 

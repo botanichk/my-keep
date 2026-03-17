@@ -37,10 +37,10 @@ body {
 
 /* Masonry сетка */
 .notes-grid {
-  columns: 1;
-  column-gap: 1rem;
+  columns: 2;
+  column-gap: 0.75rem;
 }
-@media (min-width: 640px)  { .notes-grid { columns: 2; } }
+@media (min-width: 640px)  { .notes-grid { columns: 2; column-gap: 1rem; } }
 @media (min-width: 1024px) { .notes-grid { columns: 3; } }
 @media (min-width: 1280px) { .notes-grid { columns: 4; } }
 
@@ -50,6 +50,12 @@ body {
 }
 
 /* Список (для мобильного переключателя) */
-.grid-cols-1.gap-4 > * {
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.notes-list > * {
   margin-bottom: 0 !important;
 }
