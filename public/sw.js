@@ -1,23 +1,9 @@
-const CACHE = 'my-keep-v8';
+const CACHE = 'my-keep-v9';
 
-const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png',
-  '/apple-touch-icon.png',
-];
-
-// Установка — кешируем основные файлы
 self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(ASSETS))
-  );
   self.skipWaiting();
 });
 
-// Активация — удаляем старый кеш
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
@@ -27,8 +13,20 @@ self.addEventListener('activate', (e) => {
   self.clients.claim();
 });
 
-// Fetch — сначала сеть, потом кеш
 self.addEventListener('fetch', (e) => {
+  const url = e.request.url;
+  
+  // Не перехватываем Firebase и внешние запросы
+  if (
+    url.includes('firestore.googleapis.com') ||
+    url.includes('firebase') ||
+    url.includes('googleapis.com') ||
+    !url.startsWith(self.location.origin)
+  ) {
+    return;
+  }
+
+  // Только свои файлы кешируем
   e.respondWith(
     fetch(e.request).catch(() => caches.match(e.request))
   );
