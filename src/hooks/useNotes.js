@@ -118,27 +118,7 @@ export function useNotes(folderId = null, view = 'notes') {
     return url;
   };
 
-  const uploadImageFromUrl = async (url) => {
-    try {
-      // Пробуем скачать изображение
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Не удалось скачать');
-
-      const blob = await response.blob();
-      if (!blob.type.startsWith('image/')) throw new Error('Не изображение');
-
-      // Загружаем в Firebase Storage
-      const ext = blob.type.split('/')[1] || 'png';
-      const path = `notes/${Date.now()}_url.${ext}`;
-      const storageRef = ref(storage, path);
-      await uploadBytes(storageRef, blob);
-      const downloadUrl = await getDownloadURL(storageRef);
-      return downloadUrl;
-    } catch (err) {
-      console.error('uploadImageFromUrl error:', err);
-      throw err;
-    }
-  };
+  const uploadImageFromUrl = (url) => url;
 
   return { 
     notes, loading, error,

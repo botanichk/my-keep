@@ -45,15 +45,8 @@ export default function NoteForm({ onAdd, labels, onCreateLabel, onDeleteLabel, 
     setUploading(false);
   };
 
-  const handleImageUrl = async (url) => {
-    setUploading(true);
-    try {
-      const uploadedUrl = await uploadImageFromUrl(url);
-      setImageUrl(uploadedUrl);
-    } catch (err) {
-      alert('Не удалось загрузить изображение. Попробуйте другую ссылку или сохраните изображение на устройство.');
-    }
-    setUploading(false);
+  const handleImageUrl = (url) => {
+    setImageUrl(uploadImageFromUrl(url));
   };
 
   const isDark = color === '#1C1917';

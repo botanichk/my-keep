@@ -32,14 +32,20 @@ export default function ImageUpload({ imageUrl, onUpload, onUploadUrl, onRemove,
     if (!url) return;
 
     if (!url.startsWith('http')) {
-      setUrlError('Введите корректный URL (начинается с https://)');
+      setUrlError('Введите корректный URL');
       return;
     }
 
-    // Закрываем панель и начинаем загрузку
-    setUrlInput('');
-    setShowPanel(false);
-    onUploadUrl(url);
+    // Проверяем что изображение загружается
+    const img = new window.Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      onUploadUrl(url);
+      setUrlInput('');
+      setShowPanel(false);
+    };
+    img.onerror = () => setUrlError('Не удалось загрузить изображение');
+    img.src = url;
   };
 
   return (
