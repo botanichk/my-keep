@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Trash2, Palette, Pin, PinOff, Archive, ArchiveRestore, FolderInput } from 'lucide-react';
 import ColorPicker from '../ui/ColorPicker';
+import { linkify } from '../../utils/linkify';
 
 export default function NoteCard({
   note, labels, folders,
@@ -35,7 +36,7 @@ export default function NoteCard({
         )}
         {note.text && (
           <p className={`text-sm whitespace-pre-wrap line-clamp-6 ${isDark ? 'text-gray-300' : 'text-[#78716C]'}`}>
-            {note.text}
+            {linkify(note.text)}
           </p>
         )}
 

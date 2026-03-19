@@ -3,6 +3,7 @@ import { X, Trash2, Palette, Tag, Archive, ArchiveRestore, FolderInput } from 'l
 import ColorPicker from '../ui/ColorPicker';
 import LabelPicker from '../ui/LabelPicker';
 import ImageUpload from '../ui/ImageUpload';
+import { linkify } from '../../utils/linkify';
 
 export default function NoteModal({ 
   note, labels, folders, 
@@ -19,6 +20,7 @@ export default function NoteModal({
   const [showColors, setShowColors] = useState(false);
   const [showLabels, setShowLabels] = useState(false);
   const [showMove, setShowMove] = useState(false);
+  const [textFocused, setTextFocused] = useState(false);
 
   const handleClose = () => {
     const changed = title !== note.title || text !== note.text || color !== note.color
@@ -71,12 +73,25 @@ export default function NoteModal({
           className={`${inputCls} px-5 pt-5 pb-2 text-base font-semibold`}
         />
 
-        <textarea
-          placeholder="Заметка..."
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          className={`${inputCls} px-5 py-2 text-sm resize-none flex-1 overflow-y-auto`}
-        />
+        {textFocused ? (
+          <textarea
+            placeholder="Заметка..."
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onBlur={() => setTextFocused(false)}
+            autoFocus
+            className={`${inputCls} px-5 py-2 text-sm resize-none flex-1 overflow-y-auto`}
+          />
+        ) : (
+          <p
+            onClick={() => setTextFocused(true)}
+            className={`${inputCls} px-5 py-2 text-sm flex-1 overflow-y-auto whitespace-pre-wrap cursor-text min-h-[120px]`}
+          >
+            {text ? linkify(text) : (
+              <span className="text-[#A8A29E]">Заметка...</span>
+            )}
+          </p>
+        )}
 
         {labelIds.length > 0 && (
           <div className="flex flex-wrap gap-1 px-5 pb-2">
