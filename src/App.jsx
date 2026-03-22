@@ -27,7 +27,7 @@ export default function App() {
 
   const { notes, loading, error, addNote, updateNote, deleteNote, toggleArchive, togglePin, restoreNote, deleteNotePermanently, clearTrash, uploadImage, uploadImageFromUrl } = useNotes(folderId, view);
   const { labels, addLabel, updateLabel, deleteLabel } = useLabels();
-  const { folders, addFolder, updateFolder, deleteFolder } = useFolders();
+  const { folders, addFolder, updateFolder, deleteFolder, exportFolder } = useFolders();
 
   const [search, setSearch] = useState('');
   const [activeNote, setActiveNote] = useState(null);
@@ -103,6 +103,7 @@ export default function App() {
         onAddFolder={addFolder}
         onUpdateFolder={updateFolder}
         onDeleteFolder={deleteFolder}
+        onExportFolder={exportFolder}
         onDeleteLabel={deleteLabel}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}

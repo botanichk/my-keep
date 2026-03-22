@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Archive, Tag, FolderPlus, Folder, ChevronRight, Trash2, Edit2, Check, X, Home } from 'lucide-react';
+import { Archive, Tag, FolderPlus, Folder, FolderInput, ChevronRight, Trash2, Edit2, Check, X, Home } from 'lucide-react';
 
-export default function Sidebar({ 
-  folders, labels, view, folderId, labelId, 
-  onNavigate, 
-  onAddFolder, onUpdateFolder, onDeleteFolder,
+export default function Sidebar({
+  folders, labels, view, folderId, labelId,
+  onNavigate,
+  onAddFolder, onUpdateFolder, onDeleteFolder, onExportFolder,
   onDeleteLabel,
-  isOpen, onClose 
+  isOpen, onClose
 }) {
   const [newFolderName, setNewFolderName] = useState('');
   const [addingFolder, setAddingFolder] = useState(false);
@@ -139,10 +139,17 @@ export default function Sidebar({
                       <span className="flex-1 text-left truncate">{folder.name}</span>
                     </button>
                     <div className="opacity-0 group-hover:opacity-100 flex items-center gap-0.5 pr-1 transition">
-                      <button onClick={() => handleEdit(folder)} className="p-1 text-[#A8A29E] hover:text-[#D4763B]">
+                      <button
+                        onClick={() => { onExportFolder(folder.id); onNavigate('notes'); onClose?.(); }}
+                        className="p-1 text-[#A8A29E] hover:text-[#D4763B] rounded-lg hover:bg-[#FAE8D8]"
+                        title="Выгрузить заметки в корень"
+                      >
+                        <FolderInput size={12} />
+                      </button>
+                      <button onClick={() => handleEdit(folder)} className="p-1 text-[#A8A29E] hover:text-[#D4763B] rounded-lg hover:bg-[#FAE8D8]">
                         <Edit2 size={12} />
                       </button>
-                      <button onClick={() => onDeleteFolder(folder.id)} className="p-1 text-[#A8A29E] hover:text-red-500">
+                      <button onClick={() => onDeleteFolder(folder.id)} className="p-1 text-[#A8A29E] hover:text-red-500 rounded-lg hover:bg-red-50">
                         <Trash2 size={12} />
                       </button>
                     </div>

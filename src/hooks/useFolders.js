@@ -43,5 +43,20 @@ export function useFolders() {
     await deleteDoc(doc(db, 'folders', id));
   };
 
-  return { folders, addFolder, updateFolder, deleteFolder };
+  // Выгрузить все заметки из папки в корень (папку не удалять)
+  const exportFolder = async (id) => {
+    const notesSnap = await getDocs(
+      query(collection(db, 'notes'), where('folderId', '==', id))
+    );
+
+    if (!notesSnap.empty) {
+      const batch = writeBatch(db);
+      notesSnap.docs.forEach((noteDoc) => {
+        batch.update(doc(db, 'notes', noteDoc.id), { folderId: null });
+      });
+      await batch.commit();
+    }
+  };
+
+  return { folders, addFolder, updateFolder, deleteFolder, exportFolder };
 }
