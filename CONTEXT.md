@@ -8,8 +8,7 @@
 
 Веб-приложение — клон Google Keep для создания и хранения заметок. Работает в браузере и устанавливается на телефон как приложение (PWA).
 
-**Живой адрес (Netlify):** https://mykeep-app-2026.netlify.app  
-**Живой адрес (GitLab Pages):** https://igorrr.ro.gitlab.io/my-keep
+**Живой адрес (GitLab Pages):** https://my-keep-8aac7a.gitlab.io
 **Живой адрес (GitHub Pages):** https://botanichk.github.io/my-keep
 
 ---
@@ -22,7 +21,7 @@
 | Стили | Tailwind CSS |
 | База данных | Firebase Firestore (NoSQL, realtime) |
 | Хранилище файлов | Firebase Storage (платный, не используем) |
-| Хостинг | Netlify + GitLab Pages |
+| Хостинг | GitLab Pages + GitHub Pages |
 | Иконки | lucide-react |
 | PWA | Service Worker + manifest.json |
 
@@ -144,7 +143,7 @@ createdAt   timestamp
 - ✅ Закрепление заметок
 - ✅ Архив + восстановление из архива
 - ✅ Метки — создание, назначение, удаление
-- ✅ Папки — создание, переименование, удаление (заметки уходят в корень)
+- ✅ Папки — создание, переименование, удаление (заметки уходят в корень), выгрузка в корень
 - ✅ Перемещение заметок между папками
 - ✅ Поиск по заголовку и тексту
 - ✅ Загрузка изображений по URL (Firebase Storage не используем — платный)
@@ -176,18 +175,17 @@ createdAt   timestamp
 
 **Деплой после каждого изменения:**
 
-*Netlify:*
-```bash
-npm run build
-npx netlify deploy --prod --dir=dist
-```
-
 *GitLab Pages (автоматически):*
 ```bash
 git add .
 git commit -m "описание изменений"
 git push
 # → Pipeline запустится автоматически
+```
+
+*GitHub Pages (автоматически):*
+```bash
+git push github main
 ```
 
 ---
@@ -206,8 +204,8 @@ npm run dev
 
 **GitLab Pages:**
 - Файл: `.gitlab-ci.yml`
-- Команда: `npm run build` → `cp -r dist public`
-- Публикация: `https://igorrr.ro.gitlab.io/my-keep`
+- Команда: `npm run build` → `mv dist public`
+- Публикация: `https://my-keep-8aac7a.gitlab.io`
 - Ветка: `main`
 
 **GitHub Pages:**
@@ -215,10 +213,6 @@ npm run dev
 - Деплой через GitHub Actions (автоматически при push)
 - Публикация: `https://botanichk.github.io/my-keep`
 
-**Netlify:**
-- Ручной деплой: `npx netlify deploy --prod --dir=dist`
-- URL: `https://mykeep-app-2026.netlify.app`
-
 ---
 
-*Последнее обновление: 2026-03-19*
+*Последнее обновление: 2026-03-22*
